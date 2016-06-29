@@ -6,15 +6,14 @@ package com.neural.data.statistics;
 public class Entry<T> {
 
     private T min;
-    private T firstBound;
-    private T secondBound;
+    private T part;
+    private T partAmounts;
     private T max;
 
-
-    public Entry(T min, T firstBound, T secondBound, T max) {
+    public Entry(T min, T part, T partAmounts, T max) {
         this.min = min;
-        this.firstBound = firstBound;
-        this.secondBound = secondBound;
+        this.part = part;
+        this.partAmounts = partAmounts;
         this.max = max;
     }
 
@@ -26,20 +25,20 @@ public class Entry<T> {
         this.min = min;
     }
 
-    public T getFirstBound() {
-        return firstBound;
+    public T getPart() {
+        return part;
     }
 
-    public void setFirstBound(T firstBound) {
-        this.firstBound = firstBound;
+    public void setPart(T part) {
+        this.part = part;
     }
 
-    public T getSecondBound() {
-        return secondBound;
+    public T getPartAmounts() {
+        return partAmounts;
     }
 
-    public void setSecondBound(T secondBound) {
-        this.secondBound = secondBound;
+    public void setPartAmounts(T partAmounts) {
+        this.partAmounts = partAmounts;
     }
 
     public T getMax() {
@@ -54,8 +53,8 @@ public class Entry<T> {
     public String toString() {
         return "Entry{" +
                 "min=" + min +
-                ", firstBound=" + firstBound +
-                ", secondBound=" + secondBound +
+                ", part=" + part +
+                ", partAmounts=" + partAmounts +
                 ", max=" + max +
                 '}';
     }

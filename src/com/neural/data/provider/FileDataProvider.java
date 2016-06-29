@@ -37,7 +37,7 @@ public class FileDataProvider implements DataProvider {
 
         List<Double[]> preparedLines = this.prepareLines();
 
-        configurator.setup(preparedLines);
+        configurator.setup(preparedLines, 3);
         List<DataSetRow> dataSet = configurator.generateDataSets();
 
         for(DataSetRow setElement : dataSet) {

@@ -13,23 +13,24 @@ public class Configurator {
     private List<Double[]> data;
     private List<Entry<Double>> statistics = new ArrayList<>();
 
-    public void setup(List<Double[]> data) {
-        this.data = data;
+    private Integer partNumbers;
 
-        //TODO mbrycki scale data columns
+    public void setup(List<Double[]> data, Integer partNumbers) {
+        this.data = data;
+        this.partNumbers = partNumbers;
 
         this.prepareDataStatistics();
     }
 
     private void prepareDataStatistics() {
-        for(int i = 0; i < data.get(0).length; i++) {
+        for(int i = 0; i < data.get(0).length-1; i++) {
             statistics.add(this.getStatisticsForColumn(i));
         }
     }
 
     private Entry getStatisticsForColumn(Integer columnNumber) {
 
-        Double min = 0., max = 0., firstBound, secondBound;
+        Double min = 0., max = 0.;
 
         for(Double[] dataElement : data) {
             Double dataFromColumn = dataElement[columnNumber];
@@ -43,13 +44,10 @@ public class Configurator {
             }
         }
 
-        Double part = (max - min) / 3;
-
-        firstBound = min + part;
-        secondBound = max - part;
+        Double part = (max - min) / this.partNumbers;
 
         Entry entry = new Entry(
-                min, firstBound, secondBound, max
+                min, part, this.partNumbers, max
         );
 
         System.out.println(entry);
@@ -62,10 +60,10 @@ public class Configurator {
         for(Double[] input : data) {
 
             double[] inputRecord = new double[]{
-                    this.getValuePreparedValue(input[0],0),
-                    this.getValuePreparedValue(input[1],1),
-                    this.getValuePreparedValue(input[2],2),
-                    this.getValuePreparedValue(input[3],3),
+                    this.getPreparedValue(input[0],0),
+                    this.getPreparedValue(input[1],1),
+                    this.getPreparedValue(input[2],2),
+                    this.getPreparedValue(input[3],3),
             };
 
             DataSetRow dataSetRow = new DataSetRow(inputRecord, new double[] {input[4]});
@@ -75,20 +73,23 @@ public class Configurator {
         return result;
     }
 
-    public Double getValuePreparedValue(Double value, Integer columnNumber) {
+    public Double getPreparedValue(Double value, Integer columnNumber) {
 
         Entry<Double> columnStatistics = this.statistics.get(columnNumber);
 
-        if(value < columnStatistics.getFirstBound()) {
-            return 1.;
-        }
+        for(int i = 1; i <= partNumbers; i++) {
 
-        if(value >= columnStatistics.getFirstBound() && value < columnStatistics.getSecondBound()) {
-            return 2.;
-        }
+            Double lowerBound = -100000.;
+            if(i != 1)
+                lowerBound = columnStatistics.getMin() + columnStatistics.getPart() * (i-1);
 
-        if(value >= columnStatistics.getSecondBound()) {
-            return 3.;
+            Double upperBound = 100000.;
+            if(i != partNumbers)
+                upperBound = columnStatistics.getMin() + columnStatistics.getPart() * (i);
+
+            if(lowerBound < value && value <= upperBound) {
+                return (double) i;
+            }
         }
 
         return 0.;
