@@ -85,7 +85,7 @@ public class MultiLayerBackPropagation {
         preparedLines.add(new Double[] { 43662.0926880278,25.2526092599146,7269.59689733384,0.166496758395806, 1.});
         preparedLines.add(new Double[] { 44241.2830004469,19.9825388290919,8733.17929515131,0.19739887053147, 1.});
 
-        configurator.setup(preparedLines);
+        configurator.setup(preparedLines, 3);
         List<DataSetRow> dataSet = configurator.generateDataSets();
 
         for(DataSetRow setElement : dataSet) {
