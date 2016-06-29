@@ -23,7 +23,6 @@ public class RuleGenerator {
         List<String> rules = RuleGenerator.prepareRules();
 
         for(String rule : rules) {
-            System.out.println(rule);
             ruleBlock.addRule(Rule.parse(rule, engine));
         }
 
