@@ -64,15 +64,22 @@ public class NeuralNetwork {
 	}
 	
 	private static Integer maxIndex(Float[] list) {
-		Integer i = 0, maxIndex = -1;
+		Integer maxIndex = 0;
 		Float max = null;
-		for (Float x : list) {
+		/*for (Float x : list) {
 			if ((x != null) && ((max == null) || ( x > max ))) {
 		    	max = x;
 		    	maxIndex = i;
 			}
 		    i++;
+		}*/
+
+		for (int i = 0; i < list.length; i++) {
+			if (list[i] > list[maxIndex]) {
+				maxIndex = i;
+			}
 		}
+
 		return maxIndex;
 	}
 	
