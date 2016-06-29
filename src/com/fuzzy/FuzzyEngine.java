@@ -3,9 +3,6 @@ package com.fuzzy;
 
 import com.fuzzy.rule.RuleGenerator;
 import com.fuzzylite.Engine;
-import com.fuzzylite.rule.Rule;
-import com.fuzzylite.rule.RuleBlock;
-import com.fuzzylite.term.Gaussian;
 import com.fuzzylite.term.Triangle;
 import com.fuzzylite.variable.InputVariable;
 import com.fuzzylite.variable.OutputVariable;
@@ -19,8 +16,9 @@ public class FuzzyEngine {
     private InputVariable age;
     private InputVariable loan;
     private InputVariable lti;
-    private Engine engine;
+    private OutputVariable result;
 
+    private Engine engine;
 
     public FuzzyEngine() {
         engine = new Engine();
@@ -28,38 +26,45 @@ public class FuzzyEngine {
 
         this.income = new InputVariable();
         income.setName("income");
-        income.setRange(0.0, 10000.0);
-        income.addTerm(new Gaussian("low", 0.0, 1500.0, 1.0));
-        income.addTerm(new Gaussian("medium", 5000.0, 1500.0, 1.0));
-        income.addTerm(new Gaussian("high", 10000.0, 1500.0, 1.0));
+        income.setRange(20542.3650727607, 68427.163111046);
+        income.addTerm(new Triangle("low", 20542.3650727607, 28504.58, 36504.));
+        income.addTerm(new Triangle("medium", 36504., 42465.6, 52465.6));
+        income.addTerm(new Triangle("high", 52465.0, 60562.587, 68427.163111046));
         engine.addInputVariable(income);
 
         this.age = new InputVariable();
         age.setName("age");
-        age.setRange(0.0, 1000.0);
-        age.addTerm(new Gaussian("low", 0.0, 150.0, 1.0));
-        age.addTerm(new Gaussian("medium", 500.0, 150.0, 1.0));
-        age.addTerm(new Gaussian("high", 1000.0, 150.0, 1.0));
+        age.setRange(18., 63.);
+        age.addTerm(new Triangle("low", 18., 24., 32.));
+        age.addTerm(new Triangle("medium", 33., 39., 47.));
+        age.addTerm(new Triangle("high", 48., 57., 63.));
         engine.addInputVariable(age);
 
         this.loan = new InputVariable();
         loan.setName("loan");
-        loan.setRange(0.0, 1000.0);
-        loan.addTerm(new Gaussian("low", 0.0, 150.0, 1.0));
-        loan.addTerm(new Gaussian("medium", 500.0, 150.0, 1.0));
-        loan.addTerm(new Gaussian("high", 1000.0, 150.0, 1.0));
+        loan.setRange(15.5, 10871.2);
+        loan.addTerm(new Triangle("low", 15.5, 24., 3633.56));
+        loan.addTerm(new Triangle("medium", 3634., 3642.6, 7252.65));
+        loan.addTerm(new Triangle("high", 7253., 9487.57, 10871.6));
         engine.addInputVariable(loan);
 
         this.lti = new InputVariable();
         lti.setName("lti");
-        lti.setRange(0.0, 6.0);
-        lti.addTerm(new Gaussian("low", 0.0, 1.0, 1.0));
-        lti.addTerm(new Gaussian("medium", 3.0, 1.0, 1.0));
-        lti.addTerm(new Gaussian("high", 6.0, 1.0, 1.0));
+        loan.setRange(6.22332096099854E-4, 0.190751580661163);
+        loan.addTerm(new Triangle("low", 6.22332096099854E-4, 0.0156589879, 0.06399868));
+        loan.addTerm(new Triangle("medium", 0.07399868, 0.10024578, 0.12737509));
+        loan.addTerm(new Triangle("high", 0.127376, 0.1576895, 0.190751580661163));
         engine.addInputVariable(lti);
 
         engine.addRuleBlock(RuleGenerator.generate(engine));
-        engine.configure("Minimum", "Maximum", "Minimum", "Maximum", "Centroid");
+        engine.configure("", "", "Minimum", "Maximum", "Centroid");
+
+        result = new OutputVariable();
+        result.setName("result");
+        result.setRange(-1.0, 1.0);
+        result.addTerm(new Triangle("rejected", -1.0, -0.5, 0.));
+        result.addTerm(new Triangle("approve", 0, 0.5, 1.0));
+        engine.addOutputVariable(result);
 
         StringBuilder status = new StringBuilder();
         if (!engine.isReady(status)) {
@@ -69,13 +74,6 @@ public class FuzzyEngine {
     }
 
     public String checkSolution(Entry entry) {
-
-        OutputVariable result = new OutputVariable();
-        result.setName("result");
-        result.setRange(0.0, 1.0);
-        result.addTerm(new Triangle("rejected", 0.0, 0.25, 0.5));
-        result.addTerm(new Triangle("approve", 0.5, 0.75, 1.0));
-        engine.addOutputVariable(result);
 
         income.setInputValue(entry.getIncome());
         age.setInputValue(entry.getAge());
