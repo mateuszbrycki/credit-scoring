@@ -34,7 +34,7 @@ public class Configurator {
         for(Double[] dataElement : data) {
             Double dataFromColumn = dataElement[columnNumber];
 
-            if(dataFromColumn < min) {
+            if(dataFromColumn < min || min.equals(0.)) {
                 min = dataFromColumn;
             }
 
@@ -48,9 +48,12 @@ public class Configurator {
         firstBound = min + part;
         secondBound = max - part;
 
-        return new Entry(
+        Entry entry = new Entry(
                 min, firstBound, secondBound, max
         );
+
+        System.out.println(entry);
+        return entry;
     }
 
     public List<DataSetRow> generateDataSets() {
@@ -80,11 +83,11 @@ public class Configurator {
             return 1.;
         }
 
-        if(value > columnStatistics.getFirstBound() && value < columnStatistics.getSecondBound()) {
+        if(value >= columnStatistics.getFirstBound() && value < columnStatistics.getSecondBound()) {
             return 2.;
         }
 
-        if(value > columnStatistics.getSecondBound()) {
+        if(value >= columnStatistics.getSecondBound()) {
             return 3.;
         }
 

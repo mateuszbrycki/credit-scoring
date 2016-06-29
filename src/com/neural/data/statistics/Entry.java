@@ -49,4 +49,14 @@ public class Entry<T> {
     public void setMax(T max) {
         this.max = max;
     }
+
+    @Override
+    public String toString() {
+        return "Entry{" +
+                "min=" + min +
+                ", firstBound=" + firstBound +
+                ", secondBound=" + secondBound +
+                ", max=" + max +
+                '}';
+    }
 }
