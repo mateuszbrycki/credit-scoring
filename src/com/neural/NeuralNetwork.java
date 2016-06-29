@@ -1,3 +1,7 @@
+package com.neural;
+
+import com.neural.neuron.Neuron;
+
 import java.util.ArrayList;
 import java.util.List;
 

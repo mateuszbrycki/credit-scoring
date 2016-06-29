@@ -1,3 +1,5 @@
+package com.neural.neuron;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

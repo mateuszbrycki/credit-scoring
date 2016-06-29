@@ -1,22 +1,29 @@
-import com.sun.istack.internal.NotNull;
+package com.neural.layer;
+
+import com.neural.data.provider.FileDataProvider;
+import com.neural.data.provider.DataProvider;
 import org.neuroph.core.NeuralNetwork;
+import org.neuroph.core.data.DataSet;
+import org.neuroph.core.data.DataSetRow;
 import org.neuroph.nnet.MultiLayerPerceptron;
-import org.neuroph.core.learning.*;
 import org.neuroph.util.TransferFunctionType;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
+@Component
 public class MultiLayerBackPropagation {
 
-    public MultiLayerBackPropagation() throws IOException {
+    private DataProvider dataProvider = new FileDataProvider(new File("data.txt"));
 
-        DataSet trainingSet = this.getDataFromFile(new File("data.txt"));
+    public MultiLayerBackPropagation() throws Exception {
+
+        DataSet trainingSet = dataProvider.getDataFromFile();
 
         // create multi layer perceptron
         MultiLayerPerceptron myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.TANH, 4, 2, 1);
+
         // learn the training set
         System.out.println("Before learning");
         myMlPerceptron.learn(trainingSet);
@@ -58,41 +65,7 @@ public class MultiLayerBackPropagation {
         return testNeuralNetwork(loadedMlPerceptron, dataSet);
     }
 
-    private DataSet getDataFromFile(File fin) throws IOException {
-        FileInputStream fis = new FileInputStream(fin);
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-        DataSet dataFromFile = new DataSet(4, 1);
-
-        String line = null;
-
-        while ((line = br.readLine()) != null) {
-
-            dataFromFile.addRow(mapLineToDataSetRow(line));
-        }
-
-        br.close();
-
-        return dataFromFile;
-    }
-
-    //TODO Dane przesyłane do uczenia nie mogą być w takiej formie, trzeba określić jakieś przedziały i
-    //na podstawie tych przedziałów dawać wartościom wagi, które potem będą wrzucane do uczenia lub testowania
-    //Jest to zrobione w kodzie Michała w metodzie konwertujWartosciZBazy
-    private DataSetRow mapLineToDataSetRow(String line) {
-
-        String[] splitted = line.split(",");
-
-        double[] input = new double[]{
-                Double.parseDouble(splitted[1]),
-                Double.parseDouble(splitted[2]),
-                Double.parseDouble(splitted[3]),
-                Double.parseDouble(splitted[4]) };
-
-        double[] output = new double[] {Double.parseDouble(splitted[5])};
-
-        return new DataSetRow(input, output);
-    }
 
     private DataSet getTestSet() {
         DataSet testSet = new DataSet(4);
