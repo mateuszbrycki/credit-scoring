@@ -1,8 +1,8 @@
 package com.neural.data.provider;
 
 import com.neural.data.configurator.Configurator;
-import org.neuroph.core.data.DataSet;
-import org.neuroph.core.data.DataSetRow;
+import org.neuroph.core.learning.DataSet;
+import org.neuroph.core.learning.DataSetRow;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
@@ -49,9 +49,6 @@ public class FileDataProvider implements DataProvider {
         return dataFromFile;
     }
 
-    //TODO Dane przesyłane do uczenia nie mogą być w takiej formie, trzeba określić jakieś przedziały i
-    //na podstawie tych przedziałów dawać wartościom wagi, które potem będą wrzucane do uczenia lub testowania
-    //Jest to zrobione w kodzie Michała w metodzie konwertujWartosciZBazy
     private List<Double[]> prepareLines() {
 
         List<Double[]> result = new ArrayList<>();
