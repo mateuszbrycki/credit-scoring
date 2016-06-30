@@ -47,7 +47,6 @@ public class NeuralEngine {
         System.out.println("Testing loaded neural network");
         testNeuralNetwork(loadedMlPerceptron, this.getTestSet());
 
-
         System.out.println("Testing fuzzy numbers");
         testFuzzyEngine();
 
