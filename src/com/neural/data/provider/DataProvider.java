@@ -1,6 +1,7 @@
 package com.neural.data.provider;
 
-import org.neuroph.core.learning.DataSet;
+
+import org.neuroph.core.data.DataSet;
 
 public interface DataProvider {
 

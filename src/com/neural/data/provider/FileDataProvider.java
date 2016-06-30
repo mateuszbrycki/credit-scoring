@@ -1,8 +1,8 @@
 package com.neural.data.provider;
 
 import com.neural.data.configurator.Configurator;
-import org.neuroph.core.learning.DataSet;
-import org.neuroph.core.learning.DataSetRow;
+import org.neuroph.core.data.DataSet;
+import org.neuroph.core.data.DataSetRow;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;

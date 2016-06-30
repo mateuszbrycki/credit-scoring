@@ -1,7 +1,7 @@
 package com.neural.data.configurator;
 
 import com.neural.data.statistics.Entry;
-import org.neuroph.core.learning.DataSetRow;
+import org.neuroph.core.data.DataSetRow;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

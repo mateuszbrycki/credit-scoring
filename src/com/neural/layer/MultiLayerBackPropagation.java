@@ -6,11 +6,10 @@ import com.neural.data.configurator.Configurator;
 import com.neural.data.provider.FileDataProvider;
 import com.neural.data.provider.DataProvider;
 import org.neuroph.core.NeuralNetwork;
-import org.neuroph.core.learning.DataSet;
-import org.neuroph.core.learning.DataSetRow;
+import org.neuroph.core.data.DataSet;
+import org.neuroph.core.data.DataSetRow;
 import org.neuroph.nnet.MultiLayerPerceptron;
 import org.neuroph.util.TransferFunctionType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
