@@ -18,26 +18,29 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class MultiLayerBackPropagation {
+public class NeuralEngine {
 
     private DataProvider dataProvider = new FileDataProvider(new File("data.txt"));
+    private Configurator configurator = new Configurator();
 
-    public MultiLayerBackPropagation() throws Exception {
+    private MultiLayerPerceptron perceptron;
+
+    public NeuralEngine() throws Exception {
 
         DataSet trainingSet = dataProvider.getDataFromFile();
 
         // create multi layer perceptron
-        MultiLayerPerceptron myMlPerceptron = new MultiLayerPerceptron(TransferFunctionType.TANH, 4, 2, 1);
+        perceptron = new MultiLayerPerceptron(TransferFunctionType.TANH, 4, 2, 1);
 
         // learn the training set
         System.out.println("Before learning");
-        myMlPerceptron.learn(trainingSet);
+        perceptron.learn(trainingSet);
 
         System.out.println("After learning");
-        testNeuralNetwork(myMlPerceptron, trainingSet);
+        testNeuralNetwork(perceptron, trainingSet);
 
         // save trained neural network
-        myMlPerceptron.save("myMlPerceptron.nnet");
+        perceptron.save("myMlPerceptron.nnet");
 
         NeuralNetwork loadedMlPerceptron = NeuralNetwork.load("myMlPerceptron.nnet");
 
@@ -48,6 +51,18 @@ public class MultiLayerBackPropagation {
         System.out.println("Testing fuzzy numbers");
         testFuzzyEngine();
 
+    }
+
+    public Double getRespond(Entry entry) {
+        List<Double[]> preparedLines = new ArrayList<>();
+        preparedLines.add(new Double[] {entry.getIncome(), entry.getAge(), entry.getLoan(), entry.getLti()});
+
+        //convert Entry into DataSetRow using scaling
+        configurator.setup(preparedLines, 3);
+        List<DataSetRow> dataSet = configurator.generateDataSets();
+        perceptron.setInput(dataSet.get(0).getInput());
+
+        return (perceptron.getOutput())[0];
     }
 
     public static int testNeuralNetwork(NeuralNetwork nnet, DataSet testSet) {
@@ -69,8 +84,6 @@ public class MultiLayerBackPropagation {
     }
 
     private DataSet getTestSet() {
-
-        Configurator configurator = new Configurator();
 
         DataSet testSet = new DataSet(4);
 
@@ -97,11 +110,11 @@ public class MultiLayerBackPropagation {
 
     private void testFuzzyEngine() {
         FuzzyEngine fuzzyEngine = new FuzzyEngine();
-        System.out.println(fuzzyEngine.checkSolution(new Entry(69516.1275728606,23.1621044706553,3503.17615632626,0.0503937183879316)));
-        System.out.println(fuzzyEngine.checkSolution(new Entry(44311.4492623135,28.0171668957919,5522.78669325514,0.124635659297928)));
-        System.out.println(fuzzyEngine.checkSolution(new Entry(43756.0566049069,63.9717958411202,1622.72259832146,0.0370856682304293)));
-        System.out.println(fuzzyEngine.checkSolution(new Entry(69436.5795515478,56.1526170284487,7378.83359873059,0.106267239060253)));
-        System.out.println(fuzzyEngine.checkSolution(new Entry(43662.0926880278,25.2526092599146,7269.59689733384,0.166496758395806)));
-        System.out.println(fuzzyEngine.checkSolution(new Entry(44241.2830004469,19.9825388290919,8733.17929515131,0.19739887053147)));
+        System.out.println(fuzzyEngine.getSolutionAsString(new Entry(69516.1275728606,23.1621044706553,3503.17615632626,0.0503937183879316)));
+        System.out.println(fuzzyEngine.getSolutionAsString(new Entry(44311.4492623135,28.0171668957919,5522.78669325514,0.124635659297928)));
+        System.out.println(fuzzyEngine.getSolutionAsString(new Entry(43756.0566049069,63.9717958411202,1622.72259832146,0.0370856682304293)));
+        System.out.println(fuzzyEngine.getSolutionAsString(new Entry(69436.5795515478,56.1526170284487,7378.83359873059,0.106267239060253)));
+        System.out.println(fuzzyEngine.getSolutionAsString(new Entry(43662.0926880278,25.2526092599146,7269.59689733384,0.166496758395806)));
+        System.out.println(fuzzyEngine.getSolutionAsString(new Entry(44241.2830004469,19.9825388290919,8733.17929515131,0.19739887053147)));
     }
 }

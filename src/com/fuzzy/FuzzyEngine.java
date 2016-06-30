@@ -74,8 +74,7 @@ public class FuzzyEngine {
         }
     }
 
-    public String checkSolution(Entry entry) {
-
+    public Double getSolution(Entry entry) {
         income.setInputValue(entry.getIncome());
         age.setInputValue(entry.getAge());
         loan.setInputValue(entry.getLoan());
@@ -83,6 +82,10 @@ public class FuzzyEngine {
 
         engine.process();
 
-        return entry.toString() + ", result: " + result.getOutputValue();
+        return result.getOutputValue();
+    }
+
+    public String getSolutionAsString(Entry entry) {
+        return entry.toString() + ", result: " + this.getSolution(entry);
     }
 }
